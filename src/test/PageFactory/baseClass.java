@@ -35,12 +35,6 @@ public class baseClass {
         excel = new ExcelDataProvider();
         config = new ConfigDataProvider();
 
-
-//        ExtentHtmlReporter extent = new ExtentHtmlReporter(new File(System.getProperty("user.dir") + "/Reports/phpTest_" + Helper.getCurrentDateTime() + ".html"));
-//        report = new ExtentReports();
-//        report.attachReporter(extent);
-//
-
         extent = new ExtentReports();
         spark = new ExtentSparkReporter(new File(System.getProperty("user.dir") + "/Reports/phpTest_" + Helper.getCurrentDateTime() + ".html"));
         spark.config().setTheme(Theme.DARK);

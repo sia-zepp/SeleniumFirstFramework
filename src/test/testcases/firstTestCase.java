@@ -7,13 +7,14 @@ import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
 import PageFactory.baseClass;
 import PageFactory.loginPage;
+import PageFactory.dashBoard;
 
 
 public class firstTestCase extends baseClass {
 
 
     @Test
-    public void loginZZZ() {
+    public void login() {
 
         loginPage loginPage = PageFactory.initElements(driver, loginPage.class);
 
@@ -22,11 +23,11 @@ public class firstTestCase extends baseClass {
     }
 
     @Test
-    public void loginOOO() {
+    public void bookings() {
 
-        loginPage loginPage = PageFactory.initElements(driver, loginPage.class);
+        dashBoard dashBoard = PageFactory.initElements(driver, dashBoard.class);
 
-        loginPage.loginTo(excel.getStringData("Login", 1, 0), excel.getStringData("Login", 1, 1));
+        dashBoard.goToMyBookings();
 
     }
 
