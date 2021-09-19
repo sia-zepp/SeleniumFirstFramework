@@ -23,8 +23,6 @@ public class firstTestCase extends baseClass {
 
         logger.pass("Login done");
 
-        System.out.println("Test Six");
-
     }
 
     @Test(priority = 2)
