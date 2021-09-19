@@ -23,7 +23,7 @@ public class firstTestCase extends baseClass {
 
         logger.pass("Login done");
 
-        System.out.println("Test Two");
+        System.out.println("Test Three");
 
     }
 
