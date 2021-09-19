@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true"
+          name="C:/Users/Vladimir/IdeaProjects/Selenium/src/test/testcases/firstTestCase.java">
+        <classes>
+            <class name="testcases.firstTestCase">
+                <methods>
+                    <include name="login"/>
+                    <include name="login2"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
