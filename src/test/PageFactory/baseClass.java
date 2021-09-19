@@ -1,9 +1,10 @@
 package PageFactory;
 
 import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
-import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.reporter.configuration.Theme;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestResult;
 import org.testng.Reporter;
@@ -11,7 +12,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
-import org.yaml.snakeyaml.representer.Represent;
 import utilities.ConfigDataProvider;
 import utilities.ExcelDataProvider;
 import utilities.Helper;
@@ -25,35 +25,29 @@ public class baseClass {
     public WebDriver driver;
     public ExcelDataProvider excel;
     public ConfigDataProvider config;
-    public ExtentReports report;
-    public ExtentTest logger;
+    public ExtentReports extent;
+    public ExtentSparkReporter spark;
 
     @BeforeSuite
     public void setUpSuite() {
 
 
-        Reporter.log("Setting up reports and Test Started", true);
         excel = new ExcelDataProvider();
         config = new ConfigDataProvider();
 
-
-        ExtentHtmlReporter extent = new ExtentHtmlReporter(new File(System.getProperty("user.dir") + "/Reports/phpTest_" + Helper.getCurrentDateTime() + ".html"));
-        report = new ExtentReports();
-        report.attachReporter(extent);
-
-        Reporter.log("Settings Done - Test can be started", true);
+        extent = new ExtentReports();
+        spark = new ExtentSparkReporter(new File(System.getProperty("user.dir") + "/Reports/phpTest_" + Helper.getCurrentDateTime() + ".html"));
+        spark.config().setTheme(Theme.DARK);
+        spark.config().setDocumentTitle("My report!");
+        spark.config().setReportName("First Extent Report!");
+        extent.attachReporter(spark);
 
     }
 
     @BeforeClass
 
     public void setup() {
-
-        Reporter.log("Trying to start Browser and Getting application ready " + Helper.getCurrentDateTime(), true);
         driver = browserFactory.startBrowser(driver, config.getBrowser(), config.getStagingUrl());
-        Reporter.log("Browser and Application is up and running", true);
-
-
     }
 
     @AfterClass
@@ -66,23 +60,25 @@ public class baseClass {
     @AfterMethod
     public void tearDownMethod(ITestResult result) throws IOException {
 
-        Reporter.log("Test is about to end", true);
-
+        ExtentTest test;
 
         if (result.getStatus() == ITestResult.FAILURE) {
-            logger.fail("Test failed", MediaEntityBuilder.createScreenCaptureFromPath(Helper.captureScreenshot(driver)).build());
+            test = extent.createTest(result.getName());
+            test.fail(MediaEntityBuilder.createScreenCaptureFromPath(Helper.captureScreenshot(driver)).build());
+//            Helper.captureScreenshot(driver);
+
         }
         else if(result.getStatus() == ITestResult.SUCCESS) {
-
-            logger.pass("Test passed ", MediaEntityBuilder.createScreenCaptureFromPath(Helper.captureScreenshot(driver)).build());
+            test = extent.createTest(result.getName());
+            test.pass(MediaEntityBuilder.createScreenCaptureFromPath(Helper.captureScreenshot(driver)).build());
+//            Helper.captureScreenshot(driver);
         }
         else if(result.getStatus() == ITestResult.SKIP) {
-            logger.skip("Test skipped", MediaEntityBuilder.createScreenCaptureFromPath(Helper.captureScreenshot(driver)).build());
+            test = extent.createTest(result.getName());
+            test.pass(MediaEntityBuilder.createScreenCaptureFromPath(Helper.captureScreenshot(driver)).build());
+//            Helper.captureScreenshot(driver);
         }
-        report.flush();
-
-        Reporter.log("Test completed " + Helper.getCurrentDateTime(), true);
-
+        extent.flush();
     }
 
 

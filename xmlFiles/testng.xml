@@ -7,7 +7,7 @@
             <class name="testcases.firstTestCase">
                 <methods>
                     <include name="login"/>
-                    <include name="login2"/>
+                    <include name="bookings"/>
                 </methods>
             </class>
         </classes>

@@ -17,8 +17,7 @@ public class loginPage {
     @FindBy(name="password") WebElement password;
     @FindBy(xpath="//div[@class='modal-content col align-self-center']//button[contains(@type,'submit')]") WebElement loginBtn;
 
-    public void loginTo(String user, String pass)
-    {
+    public void loginTo(String user, String pass) {
         username.sendKeys(user);
         password.sendKeys(pass);
         loginBtn.click();
