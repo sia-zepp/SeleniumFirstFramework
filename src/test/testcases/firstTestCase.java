@@ -1,5 +1,6 @@
 package testcases;
 
+import com.aventstack.extentreports.Status;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
 import PageFactory.baseClass;
@@ -12,8 +13,7 @@ public class firstTestCase extends baseClass {
     @Test
     public void login() {
 
-
-        test = report.createTest("loginToPhp");
+        extent.createTest("First test case").log(Status.PASS, "Test case passed");
 
         loginPage loginPage = PageFactory.initElements(driver, loginPage.class);
 

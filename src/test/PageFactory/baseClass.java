@@ -1,9 +1,8 @@
 package PageFactory;
 
 import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.MediaEntityBuilder;
-import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestResult;
 import org.testng.Reporter;
@@ -24,8 +23,8 @@ public class baseClass {
     public WebDriver driver;
     public ExcelDataProvider excel;
     public ConfigDataProvider config;
-    public ExtentReports report;
-    public ExtentTest test;
+    public ExtentReports extent;
+    public ExtentSparkReporter spark;
 
     @BeforeSuite
     public void setUpSuite() {
@@ -36,11 +35,17 @@ public class baseClass {
         config = new ConfigDataProvider();
 
 
-        ExtentHtmlReporter extent = new ExtentHtmlReporter(new File(System.getProperty("user.dir") + "/Reports/phpTest_" + Helper.getCurrentDateTime() + ".html"));
-        report = new ExtentReports();
-        report.attachReporter(extent);
+//        ExtentHtmlReporter extent = new ExtentHtmlReporter(new File(System.getProperty("user.dir") + "/Reports/phpTest_" + Helper.getCurrentDateTime() + ".html"));
+//        report = new ExtentReports();
+//        report.attachReporter(extent);
+//
 
-        Reporter.log("Settings Done - Test can be started", true);
+        extent = new ExtentReports();
+        spark = new ExtentSparkReporter(new File(System.getProperty("user.dir") + "/Reports/phpTest_" + Helper.getCurrentDateTime() + ".html"));
+        extent.attachReporter(spark);
+
+
+
 
     }
 
@@ -65,23 +70,17 @@ public class baseClass {
     @AfterMethod
     public void tearDownMethod(ITestResult result) throws IOException {
 
-        Reporter.log("Test is about to end", true);
-
-
         if (result.getStatus() == ITestResult.FAILURE) {
-            test.fail("Test failed", MediaEntityBuilder.createScreenCaptureFromPath(Helper.captureScreenshot(driver)).build());
+            Helper.captureScreenshot(driver);
+
         }
         else if(result.getStatus() == ITestResult.SUCCESS) {
-
-            test.pass("Test passed ", MediaEntityBuilder.createScreenCaptureFromPath(Helper.captureScreenshot(driver)).build());
+            Helper.captureScreenshot(driver);
         }
         else if(result.getStatus() == ITestResult.SKIP) {
-            test.skip("Test skipped", MediaEntityBuilder.createScreenCaptureFromPath(Helper.captureScreenshot(driver)).build());
+            Helper.captureScreenshot(driver);
         }
-        report.flush();
-
-        Reporter.log("Test completed " + Helper.getCurrentDateTime(), true);
-
+        extent.flush();
     }
 
 
