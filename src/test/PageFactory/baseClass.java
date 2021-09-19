@@ -11,7 +11,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
-import org.yaml.snakeyaml.representer.Represent;
 import utilities.ConfigDataProvider;
 import utilities.ExcelDataProvider;
 import utilities.Helper;
@@ -26,7 +25,7 @@ public class baseClass {
     public ExcelDataProvider excel;
     public ConfigDataProvider config;
     public ExtentReports report;
-    public ExtentTest logger;
+    public ExtentTest test;
 
     @BeforeSuite
     public void setUpSuite() {
@@ -70,14 +69,14 @@ public class baseClass {
 
 
         if (result.getStatus() == ITestResult.FAILURE) {
-            logger.fail("Test failed", MediaEntityBuilder.createScreenCaptureFromPath(Helper.captureScreenshot(driver)).build());
+            test.fail("Test failed", MediaEntityBuilder.createScreenCaptureFromPath(Helper.captureScreenshot(driver)).build());
         }
         else if(result.getStatus() == ITestResult.SUCCESS) {
 
-            logger.pass("Test passed ", MediaEntityBuilder.createScreenCaptureFromPath(Helper.captureScreenshot(driver)).build());
+            test.pass("Test passed ", MediaEntityBuilder.createScreenCaptureFromPath(Helper.captureScreenshot(driver)).build());
         }
         else if(result.getStatus() == ITestResult.SKIP) {
-            logger.skip("Test skipped", MediaEntityBuilder.createScreenCaptureFromPath(Helper.captureScreenshot(driver)).build());
+            test.skip("Test skipped", MediaEntityBuilder.createScreenCaptureFromPath(Helper.captureScreenshot(driver)).build());
         }
         report.flush();
 
