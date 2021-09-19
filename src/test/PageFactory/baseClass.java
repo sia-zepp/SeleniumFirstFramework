@@ -1,8 +1,10 @@
 package PageFactory;
 
 import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.reporter.configuration.Theme;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestResult;
 import org.testng.Reporter;
@@ -30,7 +32,6 @@ public class baseClass {
     public void setUpSuite() {
 
 
-        Reporter.log("Setting up reports and Test Started", true);
         excel = new ExcelDataProvider();
         config = new ConfigDataProvider();
 
@@ -42,22 +43,17 @@ public class baseClass {
 
         extent = new ExtentReports();
         spark = new ExtentSparkReporter(new File(System.getProperty("user.dir") + "/Reports/phpTest_" + Helper.getCurrentDateTime() + ".html"));
+        spark.config().setTheme(Theme.DARK);
+        spark.config().setDocumentTitle("My report!");
+        spark.config().setReportName("First Extent Report!");
         extent.attachReporter(spark);
-
-
-
 
     }
 
     @BeforeClass
 
     public void setup() {
-
-        Reporter.log("Trying to start Browser and Getting application ready " + Helper.getCurrentDateTime(), true);
         driver = browserFactory.startBrowser(driver, config.getBrowser(), config.getStagingUrl());
-        Reporter.log("Browser and Application is up and running", true);
-
-
     }
 
     @AfterClass
@@ -70,15 +66,23 @@ public class baseClass {
     @AfterMethod
     public void tearDownMethod(ITestResult result) throws IOException {
 
+        ExtentTest test;
+
         if (result.getStatus() == ITestResult.FAILURE) {
-            Helper.captureScreenshot(driver);
+            test = extent.createTest(result.getName());
+            test.fail(MediaEntityBuilder.createScreenCaptureFromPath(Helper.captureScreenshot(driver)).build());
+//            Helper.captureScreenshot(driver);
 
         }
         else if(result.getStatus() == ITestResult.SUCCESS) {
-            Helper.captureScreenshot(driver);
+            test = extent.createTest(result.getName());
+            test.pass(MediaEntityBuilder.createScreenCaptureFromPath(Helper.captureScreenshot(driver)).build());
+//            Helper.captureScreenshot(driver);
         }
         else if(result.getStatus() == ITestResult.SKIP) {
-            Helper.captureScreenshot(driver);
+            test = extent.createTest(result.getName());
+            test.pass(MediaEntityBuilder.createScreenCaptureFromPath(Helper.captureScreenshot(driver)).build());
+//            Helper.captureScreenshot(driver);
         }
         extent.flush();
     }
