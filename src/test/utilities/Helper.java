@@ -14,7 +14,6 @@ import org.openqa.selenium.io.FileHandler;
 
 public class Helper {
 
-
     //Screenshots, alerts, frmase, multiple windows, Sync issues, javascript executor
 
     public static String captureScreenshot(WebDriver driver) {

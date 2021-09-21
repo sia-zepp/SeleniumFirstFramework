@@ -1,3 +1,4 @@
+
 package PageFactory;
 
 import com.aventstack.extentreports.ExtentReports;
@@ -37,9 +38,6 @@ public class baseClass {
 
         extent = new ExtentReports();
         spark = new ExtentSparkReporter(new File(System.getProperty("user.dir") + "/Reports/phpTest_" + Helper.getCurrentDateTime() + ".html"));
-        spark.config().setTheme(Theme.DARK);
-        spark.config().setDocumentTitle("My report!");
-        spark.config().setReportName("First Extent Report!");
         extent.attachReporter(spark);
 
     }
